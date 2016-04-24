@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#484E61">
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#fff"
+            android:textSize="24sp"
+            android:text="@string/settings"/>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="10dp" >
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:textSize="20sp"
+	        android:text="@string/isAutoUpdateText"/>
+	    <CheckBox 
+	        android:id="@+id/isAutoUpdate"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:id="@+id/updateTimeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:padding="10dp" >
+        <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="20dp"
+	        android:layout_centerVertical="true"
+	        android:textSize="15sp"
+	        android:text="@string/autoUpdateTime"/>
+        <TextView 
+            android:id="@+id/timeText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="20dp"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentRight="true"
+	        android:textSize="15sp"/>
+    </RelativeLayout>
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc">
+    </RelativeLayout>
+
+</LinearLayout>

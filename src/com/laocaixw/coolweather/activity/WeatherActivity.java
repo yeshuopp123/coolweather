@@ -1,10 +1,10 @@
-package com.coolweather.app.activity;
+package com.laocaixw.coolweather.activity;
 
-import com.coolweather.app.R;
-import com.coolweather.app.service.AutoUpdateService;
-import com.coolweather.app.util.HttpCallbackListener;
-import com.coolweather.app.util.HttpUtil;
-import com.coolweather.app.util.Utility;
+import com.laocaixw.coolweather.R;
+import com.laocaixw.coolweather.service.AutoUpdateService;
+import com.laocaixw.coolweather.util.HttpCallbackListener;
+import com.laocaixw.coolweather.util.HttpUtil;
+import com.laocaixw.coolweather.util.Utility;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -45,7 +47,7 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		temp2Text = (TextView) findViewById(R.id.temp2);
 		currentDateText = (TextView) findViewById(R.id.current_date);
 		swithCity = (Button) findViewById(R.id.switch_city);
-		refreshWeather = (Button) findViewById(R.id.refresh_weather);
+		refreshWeather = (Button) findViewById(R.id.menu);
 		swithCity.setOnClickListener(this);
 		refreshWeather.setOnClickListener(this);
 		
@@ -60,8 +62,27 @@ public class WeatherActivity extends Activity implements OnClickListener {
 			//没有县级代号时就直接显示本地天气。
 			showWeather();
 		}
+		
 	}
 	
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+		if (prefs.getBoolean("isAutoUpdate", false)) {
+			startService(intent);
+		} else {
+			stopService(intent);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
 	/**
 	 * 查询县级代号所对应的天气代号
 	 */
@@ -124,13 +145,15 @@ public class WeatherActivity extends Activity implements OnClickListener {
 		temp1Text.setText(prefs.getString("temp1", ""));
 		temp2Text.setText(prefs.getString("temp2", ""));
 		weatherDespText.setText(prefs.getString("weather_desp", ""));
-		publishText.setText("今天" + prefs.getString("publish_time", "") + "发布");
+		publishText.setText(prefs.getString("publish_time", "") + "发布");
 		currentDateText.setText(prefs.getString("current_date", ""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
 		
-		Intent intent = new Intent(this, AutoUpdateService.class);
-		startService(intent);
+		if (prefs.getBoolean("isAutoUpdate", false)) {
+			Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+			startService(intent);
+		}
 	}
 
 	@Override
@@ -140,9 +163,21 @@ public class WeatherActivity extends Activity implements OnClickListener {
 			Intent intent = new Intent(this, ChooseAreaActivity.class);
 			intent.putExtra("from_weather_activity", true);
 			startActivity(intent);
+			overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 			finish();
 			break;
-		case R.id.refresh_weather:
+		case R.id.menu:
+			openOptionsMenu();
+			break;
+		default:
+			break;
+		}
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.refresh:
 			publishText.setText("同步中...");
 			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 			String weatherCode = prefs.getString("weather_code", "");
@@ -150,8 +185,17 @@ public class WeatherActivity extends Activity implements OnClickListener {
 				queryWeatherInfo(weatherCode);
 			}
 			break;
+		case R.id.about:
+			Intent aboutIntent = new Intent(this, AboutActivity.class);
+			startActivity(aboutIntent);
+			break;
+		case R.id.settings:
+			Intent settingsIntent = new Intent(this, SettingActivity.class);
+			startActivity(settingsIntent);
+			break;
 		default:
 			break;
 		}
+		return true;
 	}
 }

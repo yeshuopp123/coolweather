@@ -1,11 +1,11 @@
-package com.coolweather.app.db;
+package com.laocaixw.coolweather.db;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.coolweather.app.model.City;
-import com.coolweather.app.model.County;
-import com.coolweather.app.model.Province;
+import com.laocaixw.coolweather.model.City;
+import com.laocaixw.coolweather.model.County;
+import com.laocaixw.coolweather.model.Province;
 
 import android.content.ContentValues;
 import android.content.Context;

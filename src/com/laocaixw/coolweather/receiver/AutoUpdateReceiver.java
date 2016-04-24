@@ -1,6 +1,6 @@
-package com.coolweather.app.receiver;
+package com.laocaixw.coolweather.receiver;
 
-import com.coolweather.app.service.AutoUpdateService;
+import com.laocaixw.coolweather.service.AutoUpdateService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,5 +13,4 @@ public class AutoUpdateReceiver extends BroadcastReceiver {
 		Intent i = new Intent(context, AutoUpdateService.class);
 		context.startService(i);
 	}
-
 }

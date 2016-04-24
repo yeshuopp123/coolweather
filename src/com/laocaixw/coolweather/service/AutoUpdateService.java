@@ -1,9 +1,9 @@
-package com.coolweather.app.service;
+package com.laocaixw.coolweather.service;
 
-import com.coolweather.app.receiver.AutoUpdateReceiver;
-import com.coolweather.app.util.HttpCallbackListener;
-import com.coolweather.app.util.HttpUtil;
-import com.coolweather.app.util.Utility;
+import com.laocaixw.coolweather.receiver.AutoUpdateReceiver;
+import com.laocaixw.coolweather.util.HttpCallbackListener;
+import com.laocaixw.coolweather.util.HttpUtil;
+import com.laocaixw.coolweather.util.Utility;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -20,7 +20,7 @@ public class AutoUpdateService extends Service {
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
-	
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		new Thread(new Runnable() {
@@ -30,7 +30,8 @@ public class AutoUpdateService extends Service {
 			}
 		}).start();
 		AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		int anHour = 8 * 60 * 60 * 1000;//8小时的毫秒数
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		int anHour = prefs.getInt("autoUpdateTime", 24) * 60 * 60 * 1000;//8小时的毫秒数
 		long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
 		Intent i = new Intent(this, AutoUpdateReceiver.class);
 		PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
